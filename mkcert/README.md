@@ -39,8 +39,8 @@ cd mkcert
 .\mkcert-v1.4.4-windows-amd64.exe -cert-file certs\server.pem -key-file certs\server-key.pem localhost 127.0.0.1 ::1
 
 # 同步到实际加载点（网关工程与 msg-web 各自一份）
-Copy-Item certs\server.pem     msg-web\certs\ -Force
-Copy-Item certs\server-key.pem msg-web\certs\ -Force
+Copy-Item certs\server.pem     ..\msg-web\certs\ -Force
+Copy-Item certs\server-key.pem ..\msg-web\certs\ -Force
 ```
 
 > **证书每台机器独立，绝不能跨机器拷贝。**
