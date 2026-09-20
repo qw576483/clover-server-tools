@@ -266,8 +266,12 @@ func startMySQL(s Service) {
 	// 写 mysql_start.vbs 到 core/: 通过 WScript.Shell 以隐藏窗口 (style 0) 启动 bat,
 	// 使 MySQL 真正脱离 env.exe 的进程树, 即使关闭 env.exe 也能存活。
 	vbsPath := filepath.Join(exeDir, "mysql_start.vbs")
+	// 内容里**不写绝对路径**：用 WScript.ScriptFullName 定位同目录的 mysql_start.bat
+	// （与 mysql_start.bat 用 %~dp0 同一思路）。原来把 batPath 拼进字符串 ⇒
+	// 生成物带着本机绝对路径入库，换机器 / 搬目录后那份 vbs 就失效了。
 	vbs := "Set ws = CreateObject(\"WScript.Shell\")\r\n" +
-		"ws.Run \"cmd /c \" & Chr(34) & \"" + batPath + "\" & Chr(34), 0, false\r\n"
+		"here = CreateObject(\"Scripting.FileSystemObject\").GetParentFolderName(WScript.ScriptFullName)\r\n" +
+		"ws.Run \"cmd /c \" & Chr(34) & here & \"\\mysql_start.bat\" & Chr(34), 0, false\r\n"
 	if err := os.WriteFile(vbsPath, []byte(vbs), 0o644); err != nil {
 		fmt.Println("  " + util.Red("[错误]") + " 写 mysql_start.vbs 失败:", err)
 		return
