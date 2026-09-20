@@ -1,6 +1,6 @@
 // Package client 实现 clover 网关命令行调试客户端的连接与线协议。
 //
-// 与 clover-server-engine/pkg/transport/net（QUIC）、clover-server-engine/pkg/shared/proto 的约定保持一致，但本包
+// 与 clover-server-engine/internal/transport/net（QUIC）、clover-server-engine/pkg/shared/proto 的约定保持一致，但本包
 // 直接内联实现，使 msg-client 不依赖 clover-server-engine 整个模块 —— 可独立编译。
 //
 // 连接流程（原生客户端）：
@@ -46,12 +46,12 @@ const (
 	probeTimeout = 2 * time.Second
 )
 
-// TCP 帧类型（与 clover-server-engine/pkg/transport/net/tcp/codec.go 对齐）
+// TCP 帧类型（与 clover-server-engine/internal/transport/net/tcp/codec.go 对齐）
 const (
 	tcpFrameTypeData    byte = 0
 	tcpFrameTypePing    byte = 1
 	tcpFrameTypePong    byte = 2
-	tcpFrameTypeMigrate byte = 3
+	// 注：引擎侧原 frameTypeMigrate = 3「会话迁移」已删除（收到按未知帧类型处理），此处不再保留该常量。
 )
 
 // 裸 UDP 通道路由魔数：与引擎 demux.RawUDPMagic(0x55) 一致。
@@ -744,7 +744,7 @@ func (c *Client) readLoopTCP() {
 			return
 		}
 
-		// 只处理数据帧，忽略 ping/pong/migrate 等控制帧
+		// 只处理数据帧，忽略 ping/pong 等控制帧（本工具不回 pong）
 		if typ != tcpFrameTypeData {
 			continue
 		}

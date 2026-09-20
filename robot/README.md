@@ -90,7 +90,7 @@ go build -o robot.exe ./cmd/robot    # Windows
 | 命令 | 说明 |
 |---|---|
 | `doctor` | 连通性自检：网关 QUIC + 网关 TCP + 账号服 |
-| `signup --start N --count M [--prefix p] [--concurrency 8]` | 批量注册账号（压测前铺数据） |
+| `signup --start N --count M [--prefix p] [--concurrency 8] [--password pwd] [--yes]` | 批量注册账号（压测前铺数据）；`--yes` 跳过确认，非交互环境必带 |
 | `run [参数]` | 批量机器人：并发登录 + 可选持续压测 |
 
 ### run 参数
@@ -146,7 +146,7 @@ robot run --robots 50 --json
 **① 登录成功 = 收到 `ELoginReply{success:true}`**
 
 不是 `EPushPlayerFullSync`。引擎只在「登录成功**且已有角色**，或创建角色成功后」才推全量同步
-（`internal/transport/event/push.go` 的 `EPlayerFullSyncNotify` 注释）。
+（`internal/shared/proto/push.go` 的 `EPlayerFullSyncNotify` 注释）。
 账号没有角色时登录是**成功**的，只是没有全量同步 —— 把后者当失败，会让一次正常的登录压测全红。
 
 要验证完整链路（登录 + 建角 + 进游戏）时加 `--require-fullsync`，并配合 `--setup` 先把角色建出来。

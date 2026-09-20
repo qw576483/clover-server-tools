@@ -14,7 +14,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"runtime"
 
 	"gopkg.in/yaml.v3"
 )
@@ -130,11 +129,15 @@ func (c *Config) resolvePaths() {
 func (c *Config) RootDir() string { return c.dir }
 
 // 返回 CLI 自身目录（用于生成默认配置）。
+//
+// 不能用 runtime.Caller(0)：它给的是**编译期**源文件路径，二进制换机器 / 换目录后该路径不存在，
+// 会直接导致「写默认配置失败 → 读取默认配置失败 → 启动失败」。
 func cliDir() string {
-	_, thisFile, _, ok := runtime.Caller(0)
-	if !ok {
-		return "."
+	if exe, err := os.Executable(); err == nil {
+		return filepath.Dir(exe)
 	}
-	// runtime.Caller 给的是本源文件路径：.../internal/config/config.go，向上两级到模块根。
-	return filepath.Dir(filepath.Dir(filepath.Dir(thisFile)))
+	if wd, err := os.Getwd(); err == nil {
+		return wd
+	}
+	return "."
 }

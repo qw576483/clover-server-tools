@@ -23,6 +23,7 @@ msg-web/
 
 ```yaml
 addr: 127.0.0.1:8001        # 引擎网关地址（web 页面直连；WS/WT 复用同一端口）
+auth_addr: "http://127.0.0.1:8051"  # 账号服 HTTP 地址（**必填**：页面登录/注册经本工具代理到账号服，缺失即启动失败）
 web_port: 3020              # 工具页面监听端口
 tls_cert: certs/server.pem  # 工具页面自身 HTTPS 证书（mkcert 副本）
 tls_key:  certs/server-key.pem
@@ -32,10 +33,10 @@ proto:
 
 - 路径相对**配置文件所在目录**解析（与 [clover-tools 仓库的 `table/core`](https://github.com/qw576483/clover-tools/tree/main/table/core) 一致）。
 - 引擎消息（C2S / 回包 / 推送）已内置，无需配置引擎源码路径；`proto.business` 只需列出业务 def 目录。
-- 证书两项同为空、**文件缺失、或证书与私钥不成对**时退回明文 http（明文网关调试用）。
-  启动会打印原因与两条补救路径，**不会直接退出**——原先直接把路径交给 `ListenAndServeTLS`，
-  失败即 `log.Fatalf` 退出，双击 exe 时表现为「闪退」，真实原因只留在 `logs/` 里
-  （`certs/*.pem` 被 `.gitignore` 排除，新克隆 / 清理过证书的机器必踩）。
+- **文件缺失 / 损坏 / 证书与私钥不成对**时退回明文 http，**不会直接退出**，并打印原因与两条补救路径
+  —— 原先直接把路径交给 `ListenAndServeTLS`，失败即 `log.Fatalf` 退出，双击 exe 时表现为「闪退」，
+  真实原因只留在 `logs/` 里（`certs/*.pem` 被 `.gitignore` 排除，新克隆 / 清理过证书的机器必踩）。
+- 证书两项**同时为空**视为「有意不配 TLS」：同样退回明文 http，但**不打印补救提示**（静默降级）。
 - `web.exe -http` 可强制明文（忽略 `tls_cert` / `tls_key`）。
 - 启动会探测网关 WS 端口的实际协议并打印；**页面协议与网关协议不一致时给出告警**——不一致时
   浏览器两条通道都会失败（页面 https + 网关明文 → `wss://` 打明文端口被拒，`ws://` 又被当混合内容拦截）。
@@ -67,3 +68,5 @@ go build -o web.exe .        # Windows
 | `/api/messages` | 已加载消息列表（含 req/reply/notify 字段、方向统计） |
 | `/api/config` | 当前配置（网关地址、端口、WebTransport 证书哈希、`gateway_scheme` = 启动时探测到的网关 WS 协议） |
 | `/api/reload` | 重新扫描 proto 源文件，热加载消息定义 |
+| `/api/auth/login` | 代理账号服登录（页面用它换 token，绕开跨域） |
+| `/api/auth/signup` | 代理账号服注册 |

@@ -123,6 +123,10 @@ func Run(args []string) int {
 		// 写不出默认配置不阻断本次运行，只提示。
 		fmt.Fprintf(os.Stderr, "警告: %v\n", err)
 	}
+	if cfg == nil {
+		// 解析失败时 Load 返回 nil：这里必须兜底，否则后续 e.cfg.* 会 panic。
+		cfg = config.Default()
+	}
 	e := &env{cfg: cfg, ctx: context.Background(), jsonOut: jsonOut}
 	defer e.close()
 

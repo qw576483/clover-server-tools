@@ -22,7 +22,7 @@ windows-env/
 ├── README.md
 ├── core/             # 工具目录 (自包含, Go 工程, 分层见下)
 │   ├── env.exe       # 编译产物: 环境管理 CLI
-│   ├── my.ini        # MySQL 基准配置 (你直接提交维护的文件, 工具只读取部署, 从不生成/覆盖)
+│   ├── my.ini        # MySQL 历史基准配置（当前版本 start 不读它，见下「关于 my.ini」）
 │   ├── go.mod
 │   ├── main.go       # 入口: 仅初始化 + 调 cli.Run (薄)
 │   └── internal/        # 私有业务包, 按领域拆分且各自可单测
@@ -35,7 +35,6 @@ windows-env/
 │           └── cli.go
 │   ├── logs/         # 运行日志 (启动后自动生成: etcd.log / nats.log / redis.log / mysql.log)
 │   └── run/          # PID 记录 (启动后自动生成: *.pid)
-├── my.ini             # MySQL 实际生效配置 (env 根目录, 由 env.exe 首次启动时生成, 可自行编辑)
 ├── etcd/              # etcd 二进制 (etcd.exe / etcdctl.exe / etcdutl.exe)
 │   └── default.etcd/  # etcd 数据目录（自动生成）
 ├── nats/              # nats-server.exe
@@ -43,19 +42,14 @@ windows-env/
 └── mysql/             # MySQL ZIP 解压目录
     ├── bin/           # mysqld.exe / mysql.exe / mysqladmin.exe
     ├── data/          # MySQL 数据目录（首次启动初始化生成）
-    └── back.*.my.ini  # my.ini 的自动备份 (与基准不一致时生成, 可安全删除)
+    └── my.ini         # 每次 start mysql 由 env.exe 重新生成（见下）
 ```
 
-> **关于 `my.ini`**（三处位置）：
-> - `core/my.ini`：**你提交维护的基准配置**。直接放进仓库、自行编辑（例如调内存、加参数），工具**只读取、从不生成也不覆盖**它；若缺失则启动报错。
-> - `windows-env/my.ini`（env 根目录）：**实际生效配置**，MySQL 启动读取它，由基准部署而来。
-> - `mysql/back.<YYYYMMDD.HHMMSS>.my.ini`：**备份**，仅当根目录 `my.ini` 与你的基准不一致时生成。
->
-> 每次 `start mysql` 时，env 会用你的基准（`core/my.ini`）**部署**到根目录的 `my.ini`：
-> - 根目录不存在 → 直接由基准复制生成；
-> - 已存在且**相同** → 跳过部署；
-> - 已存在且**不同** → 先把旧文件备份到 `mysql/back.*.my.ini`，再由基准覆盖（**以你的基准为准**，保证 MySQL 用基准配置启动，避免旧参数让新版本 `mysqld` 启动即 abort）。
-> 想持久自定义：直接改 `core/my.ini`（已提交进仓库），下次启动会自动部署生效；不要只改根目录那份，因为它每次都会被基准覆盖。
+> **关于 `my.ini`**：`start mysql` **每次都会按内置模板重新生成** `mysql/my.ini`
+> （内容为绝对路径的 `basedir` / `datadir` / `port` / `log-error` 等，见 `internal/svc/lifecycle.go`）。因此：
+> - **不要改 `mysql/my.ini`** —— 下次 `start` 会被整份覆盖；
+> - 本工具**不读取**任何外部基准配置，也**不会**生成 `back.*.my.ini` 备份；
+> - `core/my.ini` 是历史遗留文件，当前版本不参与 MySQL 启动。
 
 ## 组件与默认端口
 
@@ -148,7 +142,7 @@ etcd / nats / redis 均**无密码**，仅监听 `127.0.0.1`。
 - **MySQL 弹窗**：确保使用的是最新编译的 `core/env.exe`；旧版本曾在 bat 中使用 `--console` 导致窗口弹出，新版本已移除。
 - **MySQL 启动后 `env.exe` 退出、服务也停了**：检查是否用的是新版 `vbs` 隐藏启动；旧版 `spawn()` 拉起的方式在关闭终端时会被系统带掉。
 - **命令无反应 / 报错**：打开 `cmd` 进入本目录手动运行 `core\env.exe info` 看完整报错（通常是某组件没下载或端口被占用），按提示处理即可。
-- **`mysqld` 初始化失败**：删除 `mysql\data` 与根目录 `my.ini`（及其 `back.*.my.ini` 备份）后重跑 `start` 即可重新初始化。
+- **`mysqld` 初始化失败**：删除 `mysql\data` 与 `mysql\my.ini` 后重跑 `start` 即可重新初始化（两者都会自动重建）。
 - **端口被占用**：`env.exe info` 会显示哪个端口被占；多半是上次没正常停止，运行 `stop` 即可。
 - **MySQL 连不上（业务工程报 `connection refused`）**：先 `env.exe info` 确认 mysql 为「运行中」，再看 `core\logs\mysql.log` 有无报错。
 

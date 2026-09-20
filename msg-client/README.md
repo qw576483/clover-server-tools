@@ -6,25 +6,27 @@ clover 网关**命令行调试客户端**：用命令行连上网关，发送 / 
 ## 线协议（与 clover-server-engine 对齐，自包含实现）
 
 - **传输层帧**（网关客户端接入一致）：`[1B 帧类型][4B 大端长度][payload]`
-  - 帧类型：`0`=数据，`1`=ping，`2`=pong。收到 ping 自动回 pong。
+  - 帧类型：`0`=数据，`1`=ping，`2`=pong；本工具**只处理数据帧**，ping / pong 一律忽略（不回 pong）。
 - **客户端帧**（payload）：`[4B 大端 requestID][4B 大端 msgID][body]`，body 为 JSON。
   - `requestID != 0` → 请求/回包，客户端按 `requestID` 配对；普通回包 `msgID` 恒为 `0`。
   - `requestID == 0` → 推送，客户端按 `msgID` 路由。
   - 错误回包保留特殊值 `EMsgError=0xFFFFFFFF`。
-- 关键 opcode：`EMsgLogin=2`、`EMsgResumeSession=3`、`EPushPlayerFullSync=4001`、`EPushAlert=4002`、`EPushDataSync=4003`、`EMsgError=0xFFFFFFFF`（1 号原为 `EMsgSignup`，已作废保留）；
+- 关键 opcode：`EMsgLogin=2`、`EMsgResumeSession=3`、`EMsgBindUDP=5`（客户端上报常驻裸 UDP 端点）、`EMsgUDPBindGrant=6`（网关下发绑定令牌）、`EPushPlayerFullSync=4001`、`EPushAlert=4002`、`EPushDataSync=4003`、`EMsgError=0xFFFFFFFF`（1 号原为 `EMsgSignup`，已作废保留）；
   业务消息号需 `>= 10001`（引擎占 `[1,10000]`，`InternalMsgMax=10000`）。
 
 ## 目录结构
 
 ```
 msg-client/
-  go.mod                      # module github.com/qw576483/clover-server-tools/msg-client；依赖 gopkg.in/yaml.v3
+  go.mod                      # module github.com/qw576483/clover-server-tools/msg-client；依赖 gopkg.in/yaml.v3 + github.com/quic-go/quic-go（QUIC 线路）
   config.yaml                 # 配置：网关地址 + proto 源文件夹
   cmd/client/main.go          # 入口：加载配置 → 解析 proto → REPL
   internal/
     config/config.go          # 读 config.yaml（yaml.v3），路径解析为绝对路径，缺失自动生成默认
     proto/parse.go            # 递归扫描 proto 文件夹，解析 Msg 消息号 + Request/Reply/Notify 结构体
     client/client.go          # TCP 客户端 + 线协议编解码 + 内置引擎 opcode/类型
+    authclient/               # 账号服 HTTP 客户端（注册 / 登录换 token）
+    logwriter/                # 会话日志落盘
     util/                     # 终端输出工具：ANSI 配色 + Windows 控制台适配（UTF-8/虚拟终端）
 ```
 
@@ -76,7 +78,7 @@ go build -o client.exe ./cmd/client      # Windows
 | `connect [addr]` | 连接网关（缺省用启动 `-addr`；会先断开旧连接） |
 | `disconnect` | 断开当前连接 |
 | `login <account> <password>` | 一键登录：先 HTTP 换 token，再发 `EMsgLogin{token}` |
-| `signup <account> <password>` | 注册（走账号服 HTTP，成功后自动登录） |
+| `signup <account> <password>` | 注册（走账号服 HTTP；**不会**自动登录，需再执行 `login`） |
 | `ls` / `list` | 列出所有已加载消息（方向 + req/reply/notify 字段） |
 | `about <MsgName\|id>` | 查看单条消息的说明与字段 |
 | `types [Name]` | 列出所有 Request/Reply/Notify 结构体（按类别）；或查指定结构体字段 |

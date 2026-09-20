@@ -101,7 +101,7 @@ go build -o manager.exe ./cmd/manager    # Windows
 | `nodes [--json]` | 列出全部节点（节点目录 + 服务实例） |
 | `status <node>\|--all [--json]` | 查看存活（admin `/ping`）、路由数、drain 进度 |
 | `doctor [--tag t] [--json]` | **集群体检**：etcd 连通性 + 每个节点存活 + 汇总（AI 自检入口） |
-| `drain <node> [--target addr] [--mode hybrid] [--grace 5m] [--hard-timeout 2m] [--stop-after] [--wait] [--timeout 30m]` | 发起灰度下线 |
+| `drain <node> [--target addr] [--mode hybrid] [--grace 5m] [--hard-timeout 2m] [--stop-after] [--wait] [--timeout <dur>]` | 发起灰度下线（`--timeout` 缺省 0＝按 `grace + hard_timeout` 估算，不是固定 30m；固定 30m 的是 `wait`） |
 | `drain-status <node> [--json]` | 查询灰度下线进度 |
 | `drain-cancel <node> [--json]` | 取消灰度下线（回滚，节点恢复接客） |
 | `wait <node> [--timeout 30m] [--interval 2s] [--json]` | 阻塞等待 drain 收敛（编排 / 脚本用） |

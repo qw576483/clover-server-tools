@@ -14,6 +14,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -44,7 +45,10 @@ func Login(s *store.Client, secret, name, password, ip string) (*store.Account, 
 	if name == "" || password == "" {
 		return nil, fmt.Errorf("账号与密码不能为空")
 	}
-	if n, ok := attempts[ip]; ok && n >= 5 {
+	attemptsMu.Lock()
+	n, seen := attempts[ip]
+	attemptsMu.Unlock()
+	if seen && n >= 5 {
 		return nil, fmt.Errorf("失败次数过多，请稍后再试")
 	}
 	accounts, err := store.All[*store.Account](s, store.Accounts)
@@ -59,7 +63,9 @@ func Login(s *store.Client, secret, name, password, ip string) (*store.Account, 
 		}
 	}
 	if target == nil || target.PassHash != Hash(secret, name, password) {
+		attemptsMu.Lock()
 		attempts[ip]++
+		attemptsMu.Unlock()
 		return nil, fmt.Errorf("账号或密码错误")
 	}
 	if target.Status == 0 {
@@ -70,7 +76,9 @@ func Login(s *store.Client, secret, name, password, ip string) (*store.Account, 
 	if _, err := store.Put[*store.Account](s, store.Accounts, target); err != nil {
 		return nil, err
 	}
+	attemptsMu.Lock()
 	delete(attempts, ip)
+	attemptsMu.Unlock()
 	return target, nil
 }
 
@@ -78,7 +86,11 @@ func Login(s *store.Client, secret, name, password, ip string) (*store.Account, 
 //
 // 放内存而不是库里：后台通常单进程，重启即清零是可以接受的——
 // 它防的是「脚本短时间猛试」，不是持久化审计。
-var attempts = map[string]int{}
+var (
+	// attemptsMu 保护 attempts：HTTP handler 是并发的，裸 map 读写会触发运行时 panic。
+	attemptsMu sync.Mutex
+	attempts   = map[string]int{}
+)
 
 // Session 生成会话 cookie 值：账号ID.过期时间.签名。
 func Session(secret string, id int64) string {

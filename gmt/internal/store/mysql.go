@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"net/url"
 	"strings"
 	"time"
 
@@ -115,21 +114,29 @@ func (conf MySQLConfig) dsn(dbName string) (string, error) {
 	if strings.TrimSpace(conf.User) == "" {
 		return "", fmt.Errorf("mysql DSN: user is required")
 	}
-	params := url.Values{}
-	params.Set("charset", conf.Charset)
-	params.Set("parseTime", strconvBool(conf.ParseTime))
-	params.Set("loc", conf.Loc)
+	// 用驱动的 FormatDSN 拼装：手写 "%s:%s@tcp(...)" 时，密码里的 @ : / ? 会截断 DSN
+	// （做法与 clover-server-engine 的 internal/domain/data/store/mysql 保持一致）。
+	cfg := mysqlerr.NewConfig()
+	cfg.User = conf.User
+	cfg.Passwd = conf.Pass
+	cfg.Net = "tcp"
+	cfg.Addr = fmt.Sprintf("%s:%d", conf.Host, conf.Port)
+	cfg.DBName = dbName
+	cfg.Params = map[string]string{
+		"charset":   conf.Charset,
+		"parseTime": strconvBool(conf.ParseTime),
+		"loc":       conf.Loc,
+	}
 	if conf.DialTimeout > 0 {
-		params.Set("timeout", conf.DialTimeout.String())
+		cfg.Params["timeout"] = conf.DialTimeout.String()
 	}
 	if conf.ReadTimeout > 0 {
-		params.Set("readTimeout", conf.ReadTimeout.String())
+		cfg.Params["readTimeout"] = conf.ReadTimeout.String()
 	}
 	if conf.WriteTimeout > 0 {
-		params.Set("writeTimeout", conf.WriteTimeout.String())
+		cfg.Params["writeTimeout"] = conf.WriteTimeout.String()
 	}
-	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?%s",
-		conf.User, conf.Pass, conf.Host, conf.Port, dbName, params.Encode()), nil
+	return cfg.FormatDSN()
 }
 
 // Client 是 MySQL 客户端（连接池 + 建库 + 建表入口）。
