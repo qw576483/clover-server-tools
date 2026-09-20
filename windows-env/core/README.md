@@ -3,6 +3,10 @@
 本目录为 `clover-server-engine` 及其上层业务工程本地开发提供一键式依赖环境（Windows）。
 包含四个开箱即用的中间件：`etcd`、`nats`、`redis`、`mysql`。
 
+> ⚠️ **中间件二进制不入库**：`etcd/` `mysql/` `nats/` `redis/` 四个目录合计约 1.8 GB，属第三方发行物，仓库根 `.gitignore` 已排除。
+> 新克隆本仓库后这四个目录是空的，需自行把对应中间件解压到各自目录；
+> 启动脚本与配置（`core/*.bat`、`core/*.vbs`、`core/my.ini`）随仓库提供，无需另找。
+
 环境由 Go 编译的 `core/env.exe` 统一管理，直接以命令行方式调用，无需外层 bat 包装。
 
 **特点：**

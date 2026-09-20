@@ -13,6 +13,15 @@
 mkcert/certs/
 msg-web/certs/*.pem
 
+# windows-env 的中间件二进制（etcd / mysql / nats / redis，合计约 1.8 GB）
+# 体积大、属第三方发行物，本机安装或下载即可，不入库；启动脚本（*.bat / *.vbs）与之分离，正常入库
+windows-env/etcd/
+windows-env/mysql/
+windows-env/nats/
+windows-env/redis/
+windows-env/core/logs/
+windows-env/core/run/
+
 # 系统文件
 .DS_Store
 Thumbs.db
