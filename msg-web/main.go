@@ -17,8 +17,8 @@ import (
 	"strings"
 	"time"
 
-	"msg-web/internal/logwriter"
-	"msg-web/internal/proto"
+	"clover-server-tools/msg-web/internal/logwriter"
+	"clover-server-tools/msg-web/internal/proto"
 
 	"gopkg.in/yaml.v3"
 )
