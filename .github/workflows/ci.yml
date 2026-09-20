@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  tools:
+    name: Lint / ${{ matrix.dir }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        dir:
+          - gmt
+          - manager
+          - msg-client
+          - msg-web
+          - robot
+          - windows-env/core
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: ${{ matrix.dir }}/go.mod
+          # windows-env/core 不依赖外部包、无 go.sum，setup-go 会跳过缓存并给一条 warning（不失败）
+          cache-dependency-path: ${{ matrix.dir }}/go.sum
+      - name: go vet
+        run: go vet ./...
+      - name: go test
+        run: go test ./...
