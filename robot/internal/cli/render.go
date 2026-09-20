@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"robot/internal/load"
+	"github.com/qw576483/clover-server-tools/robot/internal/load"
 )
 
 // renderReport 把压测报告渲染成人类可读文本。

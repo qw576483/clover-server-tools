@@ -32,7 +32,7 @@ import (
 	"strings"
 	"syscall"
 
-	"robot/internal/config"
+	"github.com/qw576483/clover-server-tools/robot/internal/config"
 )
 
 // 退出码：脚本与 AI 靠它判断成败，不解析文案。

@@ -33,12 +33,12 @@ import (
 	"sync"
 	"time"
 
-	"msg-client/internal/authclient"
-	"msg-client/internal/client"
-	"msg-client/internal/config"
-	"msg-client/internal/logwriter"
-	"msg-client/internal/proto"
-	"msg-client/internal/util"
+	"github.com/qw576483/clover-server-tools/msg-client/internal/authclient"
+	"github.com/qw576483/clover-server-tools/msg-client/internal/client"
+	"github.com/qw576483/clover-server-tools/msg-client/internal/config"
+	"github.com/qw576483/clover-server-tools/msg-client/internal/logwriter"
+	"github.com/qw576483/clover-server-tools/msg-client/internal/proto"
+	"github.com/qw576483/clover-server-tools/msg-client/internal/util"
 )
 
 var idx *proto.Index

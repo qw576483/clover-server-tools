@@ -3,9 +3,9 @@ package modules
 import (
 	"fmt"
 
-	"gmt/internal/auth"
-	"gmt/internal/gameclient"
-	"gmt/internal/store"
+	"github.com/qw576483/clover-server-tools/gmt/internal/auth"
+	"github.com/qw576483/clover-server-tools/gmt/internal/gameclient"
+	"github.com/qw576483/clover-server-tools/gmt/internal/store"
 )
 
 // Group 是左侧菜单的一级分组。

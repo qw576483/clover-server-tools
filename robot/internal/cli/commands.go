@@ -11,9 +11,9 @@ import (
 	"sync"
 	"time"
 
-	"robot/internal/authclient"
-	"robot/internal/client"
-	"robot/internal/load"
+	"github.com/qw576483/clover-server-tools/robot/internal/authclient"
+	"github.com/qw576483/clover-server-tools/robot/internal/client"
+	"github.com/qw576483/clover-server-tools/robot/internal/load"
 )
 
 // gatewayRateLimit 网关的默认消息级限流：单连接 64 帧/秒（突发 128）。

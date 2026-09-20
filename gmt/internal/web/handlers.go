@@ -9,11 +9,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"gmt/internal/auth"
-	"gmt/internal/gameclient"
-	"gmt/internal/modules"
-	"gmt/internal/resp"
-	"gmt/internal/store"
+	"github.com/qw576483/clover-server-tools/gmt/internal/auth"
+	"github.com/qw576483/clover-server-tools/gmt/internal/gameclient"
+	"github.com/qw576483/clover-server-tools/gmt/internal/modules"
+	"github.com/qw576483/clover-server-tools/gmt/internal/resp"
+	"github.com/qw576483/clover-server-tools/gmt/internal/store"
 )
 
 // ---- 登录 ----

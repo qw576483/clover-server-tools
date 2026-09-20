@@ -10,7 +10,7 @@ package main
 import (
 	"os"
 
-	"manager/internal/cli"
+	"github.com/qw576483/clover-server-tools/manager/internal/cli"
 )
 
 func main() {

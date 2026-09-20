@@ -1,7 +1,7 @@
 # msg-client
 
 clover 网关**命令行调试客户端**：用命令行连上网关，发送 / 接收消息，方便联调登录与业务消息。
-目录结构参考 `table/core`（`cmd/<name>/main.go` + `internal/{config,proto,client}` + `config.yaml`）。
+目录结构参考 [clover-tools 仓库的 `table/core`](https://github.com/qw576483/clover-tools/tree/main/table/core)（`cmd/<name>/main.go` + `internal/{config,proto,client}` + `config.yaml`）。
 
 ## 线协议（与 clover-server-engine 对齐，自包含实现）
 
@@ -18,7 +18,7 @@ clover 网关**命令行调试客户端**：用命令行连上网关，发送 / 
 
 ```
 msg-client/
-  go.mod                      # module msg-client；依赖 gopkg.in/yaml.v3
+  go.mod                      # module github.com/qw576483/clover-server-tools/msg-client；依赖 gopkg.in/yaml.v3
   config.yaml                 # 配置：网关地址 + proto 源文件夹
   cmd/client/main.go          # 入口：加载配置 → 解析 proto → REPL
   internal/
@@ -42,7 +42,7 @@ proto:
   business: []
 ```
 
-- 路径相对**配置文件所在目录**解析（与 `table/core` 一致）。
+- 路径相对**配置文件所在目录**解析（与 [clover-tools 仓库的 `table/core`](https://github.com/qw576483/clover-tools/tree/main/table/core) 一致）。
 - CLI 启动时递归扫描这些文件夹下的 `*.go`（跳过 `_test.go`），自动提取：
   - `const MsgXxx / EMsgXxx uint32 = N` 消息号（含 `0x` 十六进制）；
   - 所有 `type Xxx struct {...}` 中带 `json:"tag"` 的字段，按名字后缀分类为
@@ -123,14 +123,3 @@ clover> send MsgCreatePlayer name=clover server_id=1
   CLI 经 `login <account> <password>` 或 `send EMsgLogin token=...` 收发，字段由 `ls` / `types` 动态识别。
 - **业务消息（≥10001）的 body 类型由业务侧 `def` 包自定义**（如 `CreatePlayerReq`/`CreatePlayerReply`），
   业务可随意增改；改完加进 `config.yaml` 的 `proto.business` 即被 `ls` / `send` 自动识别。
-
-## 测试
-
-```bash
-go test ./...
-```
-
-- `internal/client`：本地裸 TCP mock 服务端验证 EMsgLogin 往返 + ping→pong。
-- `internal/proto`：验证扫描引擎 proto 与业务 `def` 目录得到
-  `EMsgLogin`(both)、`EMsgError`(s2c)、`EMsgPlayerFullSync`(全量同步兜底)、
-  业务消息及其字段；并验证 `BuildBody` 的数值/布尔类型转换。

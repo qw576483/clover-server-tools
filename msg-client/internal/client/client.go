@@ -31,7 +31,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"msg-client/internal/util"
+	"github.com/qw576483/clover-server-tools/msg-client/internal/util"
 	"github.com/quic-go/quic-go"
 )
 

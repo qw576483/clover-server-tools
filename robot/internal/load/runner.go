@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	"robot/internal/authclient"
-	"robot/internal/client"
+	"github.com/qw576483/clover-server-tools/robot/internal/authclient"
+	"github.com/qw576483/clover-server-tools/robot/internal/client"
 )
 
 // maxFailures 报告里保留的失败明细条数上限。

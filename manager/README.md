@@ -70,7 +70,7 @@ admin:
 
 ```
 manager/
-  go.mod                       # module manager；依赖 etcd client v3 + yaml.v3
+  go.mod                       # module github.com/qw576483/clover-server-tools/manager；依赖 etcd client v3 + yaml.v3
   config.yaml                  # etcd 连接、admin 超时与 admin 令牌（缺失自动生成默认）
   cmd/manager/main.go          # 入口
   internal/

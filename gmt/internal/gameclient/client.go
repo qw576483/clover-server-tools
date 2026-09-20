@@ -19,7 +19,7 @@ import (
 	"net/http"
 	"time"
 
-	"gmt/internal/conf"
+	"github.com/qw576483/clover-server-tools/gmt/internal/conf"
 )
 
 // NodeHealth 是一个游戏侧节点的连通性。

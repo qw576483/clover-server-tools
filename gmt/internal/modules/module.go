@@ -26,8 +26,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"gmt/internal/gameclient"
-	"gmt/internal/store"
+	"github.com/qw576483/clover-server-tools/gmt/internal/gameclient"
+	"github.com/qw576483/clover-server-tools/gmt/internal/store"
 )
 
 // Ctx 是模块回调能拿到的全部上下文。

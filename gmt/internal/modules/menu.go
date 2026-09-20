@@ -1,6 +1,6 @@
 package modules
 
-import "gmt/internal/store"
+import "github.com/qw576483/clover-server-tools/gmt/internal/store"
 
 // EnsureMenus 把「注册了哪些模块 / 页面」同步成菜单数据。
 //

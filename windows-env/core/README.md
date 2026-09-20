@@ -26,8 +26,7 @@ windows-env/
 │       │   └── console.go    # EnableUTF8Console (防中文乱码)
 │       ├── svc/          # 服务模型/检查/后台拉起/停止/MySQL 生命周期
 │       │   ├── svc.go        # Service 模型 + 路径/端口/PID/进程工具
-│       │   ├── lifecycle.go  # start/stop/info/restart 编排 + MySQL 特例
-│       │   └── svc_test.go  # 单测
+│       │   └── lifecycle.go  # start/stop/info/restart 编排 + MySQL 特例
 │       └── cli/           # 子命令解析与分发 + mysql-cmd/redis-cmd 客户端入口
 │           └── cli.go
 │   ├── logs/         # 运行日志 (启动后自动生成: etcd.log / nats.log / redis.log / mysql.log)
@@ -153,6 +152,6 @@ etcd / nats / redis 均**无密码**，仅监听 `127.0.0.1`。
 若需修改 `env.exe` 源码：
 
 ```bat
-cd core
+cd windows-env/core
 go build -o env.exe .
 ```

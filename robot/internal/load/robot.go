@@ -10,8 +10,8 @@ import (
 	"strings"
 	"time"
 
-	"robot/internal/authclient"
-	"robot/internal/client"
+	"github.com/qw576483/clover-server-tools/robot/internal/authclient"
+	"github.com/qw576483/clover-server-tools/robot/internal/client"
 )
 
 // maxPending 是「已发出、等回包」的请求数上限。

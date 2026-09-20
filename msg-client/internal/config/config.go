@@ -6,7 +6,8 @@
 //
 // 引擎内核消息（EMsgLogin/EMsgResumeSession 等）已内置硬编码，无需配置引擎源码路径。
 // 所有目录在 Load 时解析为相对配置文件的绝对路径，调用方无需再处理相对路径
-// （与 table/core 的 config 包一致）。
+// （与 clover-tools 仓库的 table/core 的 config 包一致：
+// https://github.com/qw576483/clover-tools/tree/main/table/core）。
 package config
 
 import (

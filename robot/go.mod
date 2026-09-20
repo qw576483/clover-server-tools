@@ -1,6 +1,6 @@
-module robot
+module github.com/qw576483/clover-server-tools/robot
 
-go 1.26.4
+go 1.25.0
 
 require (
 	github.com/quic-go/quic-go v0.50.0

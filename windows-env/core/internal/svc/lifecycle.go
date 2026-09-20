@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	"clover-env/internal/util"
+	"github.com/qw576483/clover-server-tools/windows-env/core/internal/util"
 )
 
 // 执行两阶段: 先全部环境检查, 再统一后台启动。

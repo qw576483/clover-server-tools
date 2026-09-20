@@ -10,13 +10,16 @@ Clover 服务端的**开发与运维工具集**：本地依赖环境、网关调
 |---|---|---|
 | `windows-env/` | Windows 本地一键依赖环境：`etcd` / `nats` / `redis` / `mysql` 四件套，由 `core/env.exe` 统一启停（MySQL 以隐藏窗口后台启动，关闭终端后服务仍在跑） | `cd windows-env/core && go build -o env.exe . && ./env.exe start` |
 | `msg-client/` | 网关**命令行调试客户端**：连网关收发消息，联调登录与业务消息；另含 `viewprobe` 视图探针 | `cd msg-client && go run ./cmd/client` |
-| `msg-web/` | 网关 **Web 可视化**测试工具：浏览器 WebSocket / WebTransport 直连网关（0ms 代理开销），页面上查看消息、组包收发 | `cd msg-web && go run .`（默认 https://127.0.0.1:3020） |
+| `msg-web/` | 网关 **Web 可视化**测试工具：浏览器 WebSocket / WebTransport 直连网关（0ms 代理开销），页面上查看消息、组包收发 | `cd msg-web && go run .`（默认 https://127.0.0.1:3020；**无证书时自动降级明文 http**，也可用 `-http` 强制明文） |
 | `robot/` | **机器人 / 自动化压测**客户端：批量登录 + 并发压测（可 ramp），输出可判定的聚合报告（成功数 / 分位延迟 / 吞吐 / 失败归类），支持 `--json` 给脚本用 | `cd robot && go run ./cmd/robot` |
 | `manager/` | 集群**进程编排**工具：从 etcd 读集群拓扑（节点目录 + 服务实例），下发 drain（灰度下线）、网关上游切换、优雅退出，并做滚动发布编排 | `cd manager && go run ./cmd/manager` |
 | `gmt/` | 游戏**运营后台**（Web）：账号 / 角色 / 菜单 / 机器 / 区服 / 封禁留档 / 礼包批次 / 操作日志，数据存 MySQL（配置键名与 `clover-server-engine` 对齐） | `cd gmt && go run . -conf conf/app.yaml`（默认 http://127.0.0.1:9000，首次自动创建 `admin/admin123`） |
 | `mkcert/` | 本地开发 **TLS 证书**说明与排障手册（不含证书文件） | 见 [`mkcert/README.md`](mkcert/README.md)、[`mkcert/排障.md`](mkcert/排障.md) |
 
 > 每个工具目录下都有自己的 `README.md`：配置字段、命令行参数、输出格式以那一份为准。
+>
+> **构建入口**：各工具都是**独立的 Go module**（各自一份 `go.mod`），本仓库**没有 `go.work`**，
+> 所以**不能在仓库根执行 `go build ./...`** —— 必须进入对应工具目录（如 `cd gmt`）后再构建。
 
 ## 快速开始
 

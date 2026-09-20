@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"clover-env/internal/svc"
-	"clover-env/internal/util"
+	"github.com/qw576483/clover-server-tools/windows-env/core/internal/svc"
+	"github.com/qw576483/clover-server-tools/windows-env/core/internal/util"
 )
 
 // 组件下载地址, 与 core/README.md 保持一致 (取自 README)。

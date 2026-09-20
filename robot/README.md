@@ -35,7 +35,7 @@ clover 的**机器人 / 自动化压测客户端**：批量登录 + 并发压测
 
 ```
 robot/
-  go.mod                 # module robot；依赖 quic-go + yaml.v3
+  go.mod                 # module github.com/qw576483/clover-server-tools/robot；依赖 quic-go + yaml.v3
   config.yaml            # 连接信息 + 压测默认参数（缺失自动生成）
   cmd/robot/main.go      # 入口
   internal/

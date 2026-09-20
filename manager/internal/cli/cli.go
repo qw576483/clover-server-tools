@@ -33,8 +33,8 @@ import (
 	"strings"
 	"text/tabwriter"
 
-	"manager/internal/config"
-	"manager/internal/registry"
+	"github.com/qw576483/clover-server-tools/manager/internal/config"
+	"github.com/qw576483/clover-server-tools/manager/internal/registry"
 )
 
 // 退出码：脚本与 AI 靠它判断成败，不解析文案。

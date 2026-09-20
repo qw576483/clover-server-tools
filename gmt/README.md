@@ -59,7 +59,7 @@ data:
 
 ## 资源来源（照搬了什么，没照搬什么）
 
-`web/static/` 下这些文件是从老后台 `C:\Work\Atlantic\GmAdmin\public\static` **逐文件拷贝**的，
+`web/static/` 下这些文件是从老后台（ThinkPHP 版）的 `public/static` **逐文件拷贝**的，
 已用哈希逐个核对，字节一致（不是"参考"，是同一个文件）：
 
 | 文件 | 用途 |

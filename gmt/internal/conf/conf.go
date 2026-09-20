@@ -12,7 +12,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"gmt/internal/store"
+	"github.com/qw576483/clover-server-tools/gmt/internal/store"
 )
 
 // Config 是 gmt 的全部配置。

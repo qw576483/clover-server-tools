@@ -25,8 +25,8 @@ package main
 import (
 	"os"
 
-	"robot/internal/cli"
-	"robot/internal/util"
+	"github.com/qw576483/clover-server-tools/robot/internal/cli"
+	"github.com/qw576483/clover-server-tools/robot/internal/util"
 )
 
 func main() {

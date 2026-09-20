@@ -2,13 +2,13 @@
 
 clover 网关 **Web 可视化测试工具**：浏览器 WebSocket / WebTransport 直连网关（0ms 代理开销），
 在页面上查看消息、组包收发，方便联调登录与业务消息。
-目录结构参考 `table/core`（`main.go` + `internal/{proto,client,logwriter}` + `web/` 前端 + `config.yaml`）。
+目录结构参考 [clover-tools 仓库的 `table/core`](https://github.com/qw576483/clover-tools/tree/main/table/core)（`main.go` + `internal/{proto,client,logwriter}` + `web/` 前端 + `config.yaml`）。
 
 ## 目录结构
 
 ```
 msg-web/
-  go.mod                      # module msg-web；依赖 gopkg.in/yaml.v3
+  go.mod                      # module github.com/qw576483/clover-server-tools/msg-web；依赖 gopkg.in/yaml.v3
   main.go                     # 入口：加载配置 → 解析 proto → 静态页 + API 服务
   config.yaml                 # 配置：网关地址 + 端口 + TLS 证书 + proto 源文件夹
   web/                        # 前端静态页（index.html / app.js / style.css）
@@ -30,7 +30,7 @@ proto:
   business: []              # 业务侧自定义消息的 def 目录（相对本文件），按需添加
 ```
 
-- 路径相对**配置文件所在目录**解析（与 `table/core` 一致）。
+- 路径相对**配置文件所在目录**解析（与 [clover-tools 仓库的 `table/core`](https://github.com/qw576483/clover-tools/tree/main/table/core) 一致）。
 - 引擎消息（C2S / 回包 / 推送）已内置，无需配置引擎源码路径；`proto.business` 只需列出业务 def 目录。
 - 证书两项同为空、**文件缺失、或证书与私钥不成对**时退回明文 http（明文网关调试用）。
   启动会打印原因与两条补救路径，**不会直接退出**——原先直接把路径交给 `ListenAndServeTLS`，

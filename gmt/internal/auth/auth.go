@@ -18,7 +18,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"gmt/internal/store"
+	"github.com/qw576483/clover-server-tools/gmt/internal/store"
 )
 
 const (

@@ -32,8 +32,8 @@ import (
 	"sync"
 	"time"
 
-	"msg-client/internal/authclient"
-	"msg-client/internal/client"
+	"github.com/qw576483/clover-server-tools/msg-client/internal/authclient"
+	"github.com/qw576483/clover-server-tools/msg-client/internal/client"
 )
 
 // 线协议消息号（与引擎 pkg/shared/proto 及 clover-mmo-1/game/def 对齐）。

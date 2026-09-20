@@ -1,6 +1,6 @@
 package auth
 
-import "gmt/internal/store"
+import "github.com/qw576483/clover-server-tools/gmt/internal/store"
 
 // EnsureBase 保证「至少有一个能登录的超级管理员」。
 //

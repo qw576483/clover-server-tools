@@ -18,11 +18,11 @@
 
 | 文件 | 说明 |
 |---|---|
-| `certs/server.pem` / `server-key.pem` | 主证书，SAN 覆盖 `localhost`、`127.0.0.1`、`::1` |
+| `certs/server.pem` / `server-key.pem` | 主证书，SAN 覆盖 `localhost`、`127.0.0.1`、`::1`；**由 mkcert 在本机生成、仓库不含** |
 | `certs/wt.pem` / `wt-key.pem` | WebTransport 专用证书，**首次启动自动生成、到期自动轮换**，不用手工签发（实际位于网关工程的 `certs/` 目录）|
-| `mkcert-v1.4.4-windows-amd64.exe` | mkcert 可执行文件 |
+| `mkcert-v1.4.4-windows-amd64.exe` | mkcert 可执行文件；**仓库不含**，须先从 [mkcert releases](https://github.com/FiloSottile/mkcert/releases) 下载并按下述名字放入本目录 |
 
-- `server.pem` 有效期到 2028-11-29，到期重跑下方命令
+- `server.pem`：**本机生成、仓库不含**（`.gitignore` 已排除 `mkcert/certs/`），有效期自本机生成时刻起算（mkcert 默认约 2 年 3 个月），到期重跑下方命令即可；确切到期时间以本机 `certs/server.pem` 为准
 - `wt.pem` 有效期 10 天，但网关自动轮换，不用管
 
 ## 快速开始
@@ -31,6 +31,9 @@
 
 ```powershell
 cd mkcert
+
+# 0. 仓库不含 mkcert 可执行文件：先从 releases 下载并重命名放入本目录
+#    https://github.com/FiloSottile/mkcert/releases -> mkcert-v1.4.4-windows-amd64.exe
 
 # 生成并安装本地根 CA（装进系统信任库）
 .\mkcert-v1.4.4-windows-amd64.exe -install

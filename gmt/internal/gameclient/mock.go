@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"gmt/internal/conf"
+	"github.com/qw576483/clover-server-tools/gmt/internal/conf"
 )
 
 // mockClient 不发真实请求，返回可预期的样例数据。

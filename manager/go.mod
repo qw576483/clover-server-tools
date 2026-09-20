@@ -1,4 +1,4 @@
-module manager
+module github.com/qw576483/clover-server-tools/manager
 
 go 1.25.0
 

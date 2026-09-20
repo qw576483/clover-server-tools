@@ -10,8 +10,8 @@ import (
 	"sync"
 	"time"
 
-	"manager/internal/adminclient"
-	"manager/internal/registry"
+	"github.com/qw576483/clover-server-tools/manager/internal/adminclient"
+	"github.com/qw576483/clover-server-tools/manager/internal/registry"
 )
 
 // waitPollInterval 轮询 drain 状态的默认间隔。

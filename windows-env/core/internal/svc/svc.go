@@ -18,7 +18,7 @@ import (
 	"syscall"
 	"time"
 
-	"clover-env/internal/util"
+	"github.com/qw576483/clover-server-tools/windows-env/core/internal/util"
 )
 
 // 是连接 MySQL 时使用的 root 密码。

@@ -5,9 +5,9 @@ package main
 import (
 	"os"
 
-	"clover-env/internal/cli"
-	"clover-env/internal/svc"
-	"clover-env/internal/util"
+	"github.com/qw576483/clover-server-tools/windows-env/core/internal/cli"
+	"github.com/qw576483/clover-server-tools/windows-env/core/internal/svc"
+	"github.com/qw576483/clover-server-tools/windows-env/core/internal/util"
 )
 
 func main() {

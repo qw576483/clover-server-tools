@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"gmt/internal/store"
+	"github.com/qw576483/clover-server-tools/gmt/internal/store"
 )
 
 // crudConf 描述一个「本地实体 + 标准增删改查」模块的差异部分。

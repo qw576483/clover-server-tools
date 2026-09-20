@@ -1,4 +1,4 @@
-module gmt
+module github.com/qw576483/clover-server-tools/gmt
 
 go 1.25.0
 
