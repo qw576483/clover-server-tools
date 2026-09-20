@@ -73,10 +73,10 @@ load:                                # 只是默认值，命令行参数优先
 
 ## 编译与运行
 
-> 编译须在 `clover-server-tools/robot` 目录内执行；产物落在**当前目录**。
+> 编译须在 `robot` 目录内执行；产物落在**当前目录**。
 
 ```bash
-cd clover-server-tools/robot
+cd robot
 
 go build -o robot     ./cmd/robot    # macOS / Linux
 go build -o robot.exe ./cmd/robot    # Windows

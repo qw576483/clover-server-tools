@@ -30,7 +30,7 @@
 ### 1. 首次使用：生成并安装证书（每台机器只需一次）
 
 ```powershell
-cd D:\work\full-dev\clover-server-tools\mkcert
+cd mkcert
 
 # 生成并安装本地根 CA（装进系统信任库）
 .\mkcert-v1.4.4-windows-amd64.exe -install
@@ -39,8 +39,8 @@ cd D:\work\full-dev\clover-server-tools\mkcert
 .\mkcert-v1.4.4-windows-amd64.exe -cert-file certs\server.pem -key-file certs\server-key.pem localhost 127.0.0.1 ::1
 
 # 同步到实际加载点（网关工程与 msg-web 各自一份）
-Copy-Item certs\server.pem     D:\work\full-dev\clover-server-tools\msg-web\certs\ -Force
-Copy-Item certs\server-key.pem D:\work\full-dev\clover-server-tools\msg-web\certs\ -Force
+Copy-Item certs\server.pem     msg-web\certs\ -Force
+Copy-Item certs\server-key.pem msg-web\certs\ -Force
 ```
 
 > **证书每台机器独立，绝不能跨机器拷贝。**
@@ -68,7 +68,7 @@ gateway: WebTransport certificate hash=9fae1499...（经 /wt-cert-hash 下发）
 ### 3. 启动 msg-web
 
 ```powershell
-cd D:\work\full-dev\clover-server-tools\msg-web
+cd msg-web
 go build -o msg-web.exe .
 .\msg-web.exe
 ```

@@ -17,8 +17,8 @@ import (
 	"strings"
 	"time"
 
-	"clover-server-tools/msg-web/internal/logwriter"
-	"clover-server-tools/msg-web/internal/proto"
+	"msg-web/internal/logwriter"
+	"msg-web/internal/proto"
 
 	"gopkg.in/yaml.v3"
 )
@@ -281,7 +281,7 @@ func tlsFallbackHint(certPath string, cause error) []string {
 	return []string{
 		"⚠ 页面 HTTPS 已禁用，改用明文 HTTP 启动（原因：" + cause.Error() + "）",
 		"  影响：页面协议为 http → 派生 ws:// 连明文网关；浏览器 WebTransport 不可用。",
-		"  修复：按 clover-server-tools/mkcert/README.md 签发证书，把 server.pem / server-key.pem 放到 " + dir + "，",
+		"  修复：按 mkcert/README.md 签发证书，把 server.pem / server-key.pem 放到 " + dir + "，",
 		"        然后重启本工具；若网关侧也配了 gateway.tls_cert，则页面 https + WS 会走 wss。",
 	}
 }

@@ -1,4 +1,4 @@
-﻿# msg-client
+# msg-client
 
 clover 网关**命令行调试客户端**：用命令行连上网关，发送 / 接收消息，方便联调登录与业务消息。
 目录结构参考 `table/core`（`cmd/<name>/main.go` + `internal/{config,proto,client}` + `config.yaml`）。
@@ -52,11 +52,11 @@ proto:
 
 ## 编译与运行
 
-> 编译须在 `clover-server-tools/msg-client` 目录内执行；产物（可执行文件）会生成在**当前目录**（即本目录），不要编到项目根目录。
+> 编译须在 `msg-client` 目录内执行；产物（可执行文件）会生成在**当前目录**（即本目录），不要编到项目根目录。
 
 ```bash
 # 先进入目录
-cd clover-server-tools/msg-client
+cd msg-client
 
 # 编译（产物落在当前目录，统一命名为 client / client.exe，勿用其它名字）
 go build -o client     ./cmd/client      # macOS / Linux

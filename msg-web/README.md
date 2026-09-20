@@ -8,7 +8,7 @@ clover 网关 **Web 可视化测试工具**：浏览器 WebSocket / WebTransport
 
 ```
 msg-web/
-  go.mod                      # module clover-server-tools/msg-web；依赖 gopkg.in/yaml.v3
+  go.mod                      # module msg-web；依赖 gopkg.in/yaml.v3
   main.go                     # 入口：加载配置 → 解析 proto → 静态页 + API 服务
   config.yaml                 # 配置：网关地址 + 端口 + TLS 证书 + proto 源文件夹
   web/                        # 前端静态页（index.html / app.js / style.css）
@@ -42,12 +42,12 @@ proto:
 
 ## 编译与运行
 
-> 编译须在 `clover-server-tools/msg-web` 目录内执行；产物（可执行文件）会生成在**当前目录**，
+> 编译须在 `msg-web` 目录内执行；产物（可执行文件）会生成在**当前目录**，
 > 统一命名为 `web` / `web.exe`，勿用其它名字。
 
 ```bash
 # 先进入目录
-cd clover-server-tools/msg-web
+cd msg-web
 
 # 编译（产物落在当前目录，统一命名为 web / web.exe，勿用其它名字）
 go build -o web     .        # macOS / Linux

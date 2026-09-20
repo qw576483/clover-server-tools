@@ -4,7 +4,7 @@
 **但主题静态资源是从老后台直接拷过来的**，这一点必须先说清楚（见下节）。
 
 ```bash
-cd clover-server-tools/gmt
+cd gmt
 go run . -conf conf/app.yaml
 # 打开 http://127.0.0.1:9000
 # 默认账号 admin / admin123（**只在库里没有 admin 时**自动创建，登录后请立刻改口令）

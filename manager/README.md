@@ -82,10 +82,10 @@ manager/
 
 ## 编译与运行
 
-> 编译须在 `clover-server-tools/manager` 目录内执行；产物落在**当前目录**。
+> 编译须在 `manager` 目录内执行；产物落在**当前目录**。
 
 ```bash
-cd clover-server-tools/manager
+cd manager
 
 go build -o manager     ./cmd/manager    # macOS / Linux
 go build -o manager.exe ./cmd/manager    # Windows

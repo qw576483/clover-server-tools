@@ -27,7 +27,7 @@ import (
 const maxRespBytes = 1 << 20
 
 // TokenHeader 令牌请求头名，与引擎侧 adminTokenHeader 保持一致
-// （`clover-server-engine/internal/app/admin.go`，引擎同时接受 `Authorization: Bearer <token>`）。
+// （[`clover-server-engine/internal/app/admin.go`](https://github.com/qw576483/clover-server-engine/blob/main/internal/app/admin.go)，引擎同时接受 `Authorization: Bearer <token>`）。
 const TokenHeader = "X-Admin-Token"
 
 // Client 单个节点 admin 控制面的 HTTP 客户端。

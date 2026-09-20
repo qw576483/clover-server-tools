@@ -9,7 +9,7 @@
 //
 // 启动：
 //
-//	cd clover-server-tools/gmt
+//	cd gmt
 //	go run . -conf conf/app.yaml
 //
 // 默认账号 admin / admin123（库里没有账号时自动创建，登录后请立即修改）。
