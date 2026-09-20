@@ -1,0 +1,39 @@
+# gmt 配置
+#
+# 节点命名与 clover-server-engine 对齐：数据库在 data.mysql 下。
+# 缺项走代码里的默认值（127.0.0.1:3306 / root / 空口令 / clover-gmt），
+# 所以整段 data 删掉也能在本机开发环境跑起来。
+
+server:
+  listen: 127.0.0.1:9000
+  # 会话签名、口令散列加盐与验证码签名都用它。改掉 = 所有人立即掉线。
+  secret: please-change-this-secret
+
+site:
+  name: Clover GMT
+  timezone: Asia/Shanghai
+
+# ========== 通用数据存贮（gmt 自身数据） ==========
+data:
+  auto_create_table: true      # 启动执行 CREATE TABLE IF NOT EXISTS（生产可关，交给运维管 DDL）
+  mysql:
+    host: "127.0.0.1"
+    port: 3306
+    user: "root"
+    pass: ""
+    db_name: "clover-gmt"      # 独立库；表名不带前缀
+    charset: "utf8mb4"
+    auto_create: true          # 库不存在时自动建库
+    parse_time: true           # DATETIME → time.Time（gmt 的时间列是 DATETIME）
+
+# ========== 游戏侧连接方式 ==========
+#   driver: mock —— 不发真实请求，返回示例数据，适合本地开发与演示
+#   driver: http —— 按下面的地址真实调用
+remote:
+  driver: mock
+  timeout_ms: 5000
+  endpoints:
+    auth: http://127.0.0.1:8081
+    game: http://127.0.0.1:8082
+    coop: http://127.0.0.1:8083
+    log:  http://127.0.0.1:8084

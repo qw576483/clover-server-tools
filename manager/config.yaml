@@ -1,0 +1,26 @@
+# manager 配置：集群进程编排工具（看节点 / 看状态 / 操作节点）
+#
+# 数据源是 etcd —— 引擎把节点目录与服务实例登记在那里（见 clover-server-engine
+# internal/app/node_registry.go 与 discovery.go）：
+#   clover/nodes/<nodeID>         节点目录：类型 / tags / admin 地址
+#   clover/services/<role>/<实例> 服务发现：logic / auth / log 的可调用地址
+etcd:
+  endpoints:
+    - "127.0.0.1:2379"
+  # 需要鉴权时填写（etcd 未开鉴权则留空）
+  username: ""
+  password: ""
+  dial_timeout: "3s"
+
+admin:
+  # 单次 admin 控制面请求超时
+  timeout: "5s"
+  # 兜底端口：仅当节点未上报 admin 地址（老版本节点）时使用，
+  # 用「节点 ID 的主机名 + 该端口」拼出控制面地址（同机多实例会冲突，不推荐依赖它）。
+  default_port: 8041
+  # admin 控制面鉴权令牌：必须与被管节点配置里的 admin.token 逐字一致。
+  # 留空 = 不发令牌头（节点未启用鉴权时用；此时节点按引擎规则只可能绑回环）。
+  # 非空 = 每个 admin 请求都带 `X-Admin-Token: <令牌>`；节点启用了令牌但不填这里，
+  # drain / shutdown / upstream / drain-status 会被 401 拒绝。
+  # 这是长期凭据：不要写进命令行参数（会进 shell 历史与进程列表），本文件也请收紧读权限。
+  token: ""

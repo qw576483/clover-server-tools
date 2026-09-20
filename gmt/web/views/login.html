@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <title>登录 - {{.Site.Name}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/app.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        body { background: #f2f5f7; }
+        .gmt-login { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .gmt-login .card { width: 380px; border: none; box-shadow: 0 0 35px rgba(0,0,0,.06); }
+    </style>
+</head>
+
+<body class="gmt-login">
+    <div class="card">
+        <div class="card-body p-4">
+            <div class="text-center mb-4">
+                <svg width="40" height="40" viewBox="0 0 24 24" aria-hidden="true">
+                    <rect width="24" height="24" rx="6" fill="#5369f8" />
+                    <path d="M15.9 9.4a4.7 4.7 0 1 0 0 5.2" fill="none" stroke="#fff" stroke-width="2"
+                        stroke-linecap="round" />
+                </svg>
+                <h5 class="mt-2 mb-0">{{.Site.Name}}</h5>
+                <p class="text-muted font-13">请输入后台账号登录</p>
+            </div>
+
+            <div class="alert alert-danger d-none" id="gmt-err"></div>
+
+            <form id="gmt-form">
+                <div class="form-group">
+                    <label>账号</label>
+                    <input class="form-control" id="gmt-name" autocomplete="username" placeholder="admin">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" class="form-control" id="gmt-pass" autocomplete="current-password"
+                        placeholder="请输入密码">
+                </div>
+                <div class="form-group">
+                    <label>验证码</label>
+                    <div class="input-group">
+                        <input class="form-control" id="gmt-captcha" autocomplete="off" placeholder="算式结果">
+                        <div class="input-group-append">
+                            <img id="gmt-captcha-img" src="/api/captcha" alt="验证码" title="看不清？点击换一张"
+                                style="height:38px;cursor:pointer;border:1px solid #ced4da;border-left:0;border-radius:0 4px 4px 0">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block" id="gmt-submit">登 录</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/vendor.min.js"></script>
+    <script src="/static/js/gmt.js"></script>
+    <script>
+        var capImg = document.getElementById('gmt-captcha-img');
+        var capInput = document.getElementById('gmt-captcha');
+
+        function refreshCaptcha() {
+            capImg.src = '/api/captcha?t=' + Date.now();
+            capInput.value = '';
+        }
+        capImg.addEventListener('click', refreshCaptcha);
+
+        document.getElementById('gmt-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var err = document.getElementById('gmt-err');
+            err.classList.add('d-none');
+            var btn = document.getElementById('gmt-submit');
+            btn.disabled = true;
+            gmt.post('/api/login', {
+                name: document.getElementById('gmt-name').value,
+                password: document.getElementById('gmt-pass').value,
+                captcha: capInput.value
+            }).then(function () {
+                location.href = '/';
+            }).catch(function (e2) {
+                err.textContent = e2.message;
+                err.classList.remove('d-none');
+                btn.disabled = false;
+                // 验证码是一次性的：无论什么原因失败都得换一张。
+                refreshCaptcha();
+            });
+        });
+    </script>
+</body>
+
+</html>

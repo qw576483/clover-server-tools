@@ -1,0 +1,115 @@
+{{define "head"}}<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <title>{{if .Title}}{{.Title}} - {{end}}{{.Site.Name}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/static/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="/static/libs/select2/select2.min.css" rel="stylesheet" type="text/css" />
+    <link href="/static/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        /* 图标尺寸：feather 的 svg 默认是 24px，工具栏里要更小 */
+        .icon-xs { width: 14px; height: 14px; }
+        .icon-sm { width: 16px; height: 16px; }
+        .icon-dual { color: #98a6ad; }
+        /* 顶栏 logo：内联 svg，不依赖图片资源 */
+        .gmt-mark { border-radius: 6px; }
+        /* 运营表格列多且内容长，默认纵向居中 + 不换行，比主题默认的表格好扫读 */
+        .table-centered td { vertical-align: middle; }
+        .gmt-nowrap { white-space: nowrap; }
+        .gmt-cell-long { max-width: 420px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .gmt-stat .card-body { padding: 1.1rem 1.25rem; }
+        .gmt-stat-value { font-size: 1.6rem; font-weight: 600; line-height: 1.2; }
+        .gmt-stat-label { color: #98a6ad; font-size: .8rem; }
+        .gmt-codes { height: 320px; font-family: Consolas, Menlo, monospace; }
+    </style>
+</head>
+
+<body>
+    <div id="wrapper">
+
+        <div class="navbar navbar-expand flex-column flex-md-row navbar-custom">
+            <div class="container-fluid">
+                <a href="/" class="navbar-brand mr-0 mr-md-2 logo">
+                    <span class="logo-lg">
+                        <svg class="gmt-mark" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+                            <rect width="24" height="24" rx="6" fill="#5369f8" />
+                            <path d="M15.9 9.4a4.7 4.7 0 1 0 0 5.2" fill="none" stroke="#fff" stroke-width="2"
+                                stroke-linecap="round" />
+                        </svg>
+                        <span class="d-inline h5 ml-1 text-logo">{{.Site.Name}}</span>
+                    </span>
+                </a>
+
+                <ul class="navbar-nav bd-navbar-nav flex-row list-unstyled menu-left mb-0">
+                    <li>
+                        <button class="button-menu-mobile open-left disable-btn">
+                            <i data-feather="menu" class="menu-icon"></i>
+                            <i data-feather="x" class="close-icon"></i>
+                        </button>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav flex-row ml-auto d-flex list-unstyled topnav-menu float-right mb-0">
+                    <li class="dropdown notification-list">
+                        <a class="nav-link dropdown-toggle nav-user mr-0" data-toggle="dropdown" href="#" role="button">
+                            <span class="d-none d-md-inline-block ml-1">
+                                {{if .User}}{{.User.Name}}{{else}}未登录{{end}}
+                                <i data-feather="chevron-down" class="icon-xs"></i>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right profile-dropdown">
+                            <a href="javascript:void(0)" class="dropdown-item notify-item" id="gmt-logout">
+                                <i data-feather="log-out" class="icon-dual icon-xs mr-2"></i>
+                                <span>退出登录</span>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="left-side-menu">
+            <div class="media user-profile mt-2 mb-2">
+                <div class="media-body">
+                    <h6 class="pro-user-name mt-0 mb-0">{{if .User}}{{.User.Name}}{{end}}</h6>
+                    <span class="pro-user-desc">游戏侧驱动：{{.Driver}}</span>
+                </div>
+            </div>
+            <div class="sidebar-content">
+                <div id="sidebar-menu" class="slimscroll-menu">
+                    <ul class="metismenu" id="menu-bar">
+                        <li class="menu-title">导航</li>
+                        {{range .Menus}}
+                        {{if .Children}}
+                        <li class="{{if .Open}}mm-active{{end}}">
+                            <a href="javascript: void(0);">
+                                <i data-feather="{{.Icon}}"></i>
+                                <span> {{.Name}} </span>
+                                <span class="menu-arrow"></span>
+                            </a>
+                            <ul class="nav-second-level mm-collapse{{if .Open}} mm-show{{end}}">
+                                {{range .Children}}
+                                <li class="{{if .Active}}mm-active{{end}}"><a href="{{.URL}}">{{.Name}}</a></li>
+                                {{end}}
+                            </ul>
+                        </li>
+                        {{else}}
+                        <li class="{{if .Active}}mm-active{{end}}">
+                            <a href="{{.URL}}"><i data-feather="{{.Icon}}"></i><span> {{.Name}} </span></a>
+                        </li>
+                        {{end}}
+                        {{end}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-page">
+            <div class="content">
+                <div class="container-fluid">
+{{end}}

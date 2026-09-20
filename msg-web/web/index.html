@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>msg-web — clover 网关测试工具</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>msg-web</h1>
+    <!-- 登录区（右上角）。流程与 msg-client 的 login 命令一致：
+         ① 账号密码 POST /api/auth/login 换 JWT（游戏服不接收账号密码）；
+         ② 长连接发 EMsgLogin{token}；
+         ③ 服务端回 EPushPlayerFullSync 后进入已登录态，断线重连自动恢复会话。 -->
+    <div class="header-right">
+      <input type="text" id="inpAccount" class="auth-input" placeholder="账号" autocomplete="username">
+      <input type="password" id="inpPassword" class="auth-input" placeholder="密码" autocomplete="current-password">
+      <button id="btnLogin" class="btn-auth">登录</button>
+      <button id="btnSignup" class="btn-auth btn-auth-ghost">注册</button>
+      <span id="authStatus" class="auth-status logged-out">未登录</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- 左侧：连接 + 消息选择 + 发送 -->
+    <section class="panel panel-left">
+      <div class="panel-section conn-section">
+        <div class="conn-header">
+          <label>连接</label>
+          <span id="wsStatus" class="ws-status disconnected">未连接</span>
+        </div>
+        <div class="conn-row">
+          <button id="btnConnect" class="btn-connect">连接</button>
+          <button id="btnDisconnect" class="btn-disconnect" style="display:none">断开</button>
+        </div>
+      </div>
+      <div class="panel-section">
+        <div class="msg-select-header">
+          <label>消息选择</label>
+          <button id="btnReload" class="btn-reload" title="重新扫描 proto 源文件">reload</button>
+        </div>
+        <input type="text" id="inpFilter" placeholder="搜索消息名称或 ID..." autocomplete="off">
+        <div id="msgList" class="msg-list"></div>
+        <div class="link-input-row">
+          <label>消息 ID</label>
+          <input type="number" id="inpMsgID" placeholder="或手动输入" autocomplete="off">
+        </div>
+      </div>
+
+      <div class="panel-section" id="paramSection">
+        <label>请求参数</label>
+        <div id="paramFields"></div>
+        <div id="manualJSON" style="display:none">
+          <textarea id="inpBody" rows="6" placeholder="{}" autocomplete="off"></textarea>
+        </div>
+        <div class="param-toggle">
+          <label><input type="checkbox" id="chkManual"> Raw</label>
+        </div>
+      </div>
+
+      <div class="panel-section">
+        <button id="btnSend" class="btn-send">发送</button>
+      </div>
+    </section>
+
+    <!-- 右侧：日志 -->
+    <section class="panel panel-right">
+      <div class="log-card">
+        <div id="sendLog" class="log-panel"></div>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

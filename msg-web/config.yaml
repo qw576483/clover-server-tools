@@ -1,0 +1,29 @@
+# msg-web — Web 可视化测试工具
+# 浏览器 WebSocket/WebTransport 直连网关，0ms 代理开销
+
+# 引擎网关地址（web 页面直连；WS/WT 复用同一端口，协议由页面自动选择）
+addr: 127.0.0.1:8001
+
+web_port: 3020
+
+# 账号服 HTTP 地址（必填）：页面登录 / 注册都经本工具代理到账号服（游戏服已不收账号密码）。
+# 页面流程：本工具代理 /api/auth/login 换 token → 页面用 token 发 EMsgLogin。
+# 走代理而非页面直连的原因：账号服在另一个端口，页面直接 fetch 属跨域。
+auth_addr: "http://127.0.0.1:8051"
+
+# 工具页面协议必须与**网关**一致，否则浏览器两条通道都失败：
+#   页面 https → 派生 wss:// 打到明文网关端口（TLS 握手失败）；页面 http 里再退 ws:// 则没事。
+# 当前网关已开 TLS（gateway.tls_cert 填了 certs/server.pem），故这里也配证书：
+# 页面 https://localhost:3020 + wss://127.0.0.1:8001/ws + WebTransport 三者全可用。
+# 网关侧 tcp_tls_disabled=false（TCP 接入也走 TLS），Unity 客户端在 config.json 里同步
+# 设了 server.tls=true；两者的开关必须相反，否则 TCP 线握手直接失败。
+#
+# 反过来：若把网关的 tls_cert 清空（退回明文网关），这里两行也要注释掉，或启动时加 -http，
+# 否则会打印「协议不匹配」告警，浏览器两条通道都会连不上。
+tls_cert: certs/server.pem
+tls_key:  certs/server-key.pem
+
+# 引擎消息已内置（C2S/回包/推送），无需配置引擎源码路径。
+# business 填业务侧自定义消息的 def 目录（相对本文件解析），可多个，按需添加。
+proto:
+  business: []

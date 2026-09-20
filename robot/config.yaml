@@ -1,0 +1,19 @@
+# robot 配置：机器人 / 自动化压测客户端
+#
+# 连接信息与 msg-client 完全一致（同一套网关与账号服）；
+# load 段只是一份「不想每次敲一长串命令行」的默认值 —— 命令行参数优先级更高。
+gateway: "127.0.0.1:8003"            # 网关 QUIC/UDP 地址
+gateway_tcp: "127.0.0.1:8002"        # 网关 TCP 地址（QUIC 不可用 / 强制 tcp 时使用）
+auth_addr: "http://127.0.0.1:8051"   # 账号服 HTTP 地址（换 token 走这里）
+
+load:
+  robots: 10                # 机器人数量
+  account_prefix: "robot_"  # 账号前缀，实际账号 = 前缀 + 序号
+  account_start: 1          # 序号起点（含）；第 i 个机器人用 前缀+(起点+i)
+  password: "123123"        # 统一密码
+  transport: "auto"         # auto | quic | tcp
+  ramp_per_sec: 0           # 每秒启动多少个机器人；0 = 不限（全并发，即"惊群"）
+  duration: "0s"            # 登录成功后的保持在线时长；0 = 登录成功即退出（纯登录压测）
+  msg_interval: "1s"        # 登录后周期发消息的间隔
+  login_timeout: "10s"      # 单个机器人「连上 → 登录完成」的总超时
+  signup_concurrency: 8     # signup 子命令的注册并发

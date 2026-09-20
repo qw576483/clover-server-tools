@@ -1,0 +1,4 @@
+# 本地运行日志与构建产物（数据都在 MySQL 里，仓库里不存运行数据）。
+run.log
+run.err
+gmt.exe

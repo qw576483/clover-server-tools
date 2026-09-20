@@ -1,0 +1,44 @@
+{{template "head" .}}
+
+<div class="row page-title align-items-center">
+    <div class="col-sm-6 col-xl-6">
+        <h4 class="mb-1 mt-0">{{.Title}}</h4>
+    </div>
+    <div class="col-sm-6 col-xl-6 text-sm-right">
+        {{if not .Module.ReadOnly}}
+        <button type="button" class="btn btn-primary" id="gmt-create">
+            <i data-feather="plus" class="icon-xs mr-1"></i>新增
+        </button>
+        {{end}}
+        <button type="button" class="btn btn-light" id="gmt-reload">
+            <i data-feather="refresh-cw" class="icon-xs mr-1"></i>刷新
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form class="form-inline mb-3" id="gmt-search"></form>
+                <div class="table-responsive">
+                    <table class="table table-centered table-hover mb-0">
+                        <thead id="gmt-head"></thead>
+                        <tbody id="gmt-body"></tbody>
+                    </table>
+                </div>
+                <div class="mt-3" id="gmt-pager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 页面的全部行为由 gmt.list 承担：本文件只声明「这是哪个模块」。
+    // 新增模块不需要再写一个 JS 文件，这是与老后台最大的区别。
+    document.addEventListener('DOMContentLoaded', function () {
+        gmt.list.boot('{{.Key}}');
+    });
+</script>
+
+{{template "foot" .}}

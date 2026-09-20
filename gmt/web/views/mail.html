@@ -1,0 +1,107 @@
+{{template "head" .}}
+
+<div class="row page-title align-items-center">
+    <div class="col-12">
+        <h4 class="mb-1 mt-0">邮件管理</h4>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-7">
+        <div class="card">
+            <div class="card-body">
+                <form id="gmt-form">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">区服 <span class="text-danger">*</span></label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="gmt-server">
+                                {{range .Servers}}<option value="{{.id}}">{{.name}}</option>{{end}}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">收件人</label>
+                        <div class="col-sm-9">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="gmt-all" name="gmt-target" class="custom-control-input" checked>
+                                <label class="custom-control-label" for="gmt-all">全服</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="gmt-some" name="gmt-target" class="custom-control-input">
+                                <label class="custom-control-label" for="gmt-some">指定玩家</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row d-none" id="gmt-targets-row">
+                        <label class="col-sm-3 col-form-label">玩家 ID</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="gmt-targets" rows="3"
+                                placeholder="多个用逗号分隔，如 100001,100002"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" id="gmt-level-row">
+                        <label class="col-sm-3 col-form-label">最低等级</label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="gmt-level" value="0">
+                            <small class="text-muted">全服邮件时生效，0 表示不限制</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">标题 <span class="text-danger">*</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="gmt-title" placeholder="邮件标题">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">内容</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" id="gmt-content" rows="5" placeholder="邮件正文"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">附件</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="gmt-items" placeholder="1001:10,2002:1">
+                            <small class="text-muted">格式：道具配置ID:数量，多个用逗号分隔</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mb-0">
+                        <div class="col-sm-9 offset-sm-3">
+                            <button type="submit" class="btn btn-primary" id="gmt-send">
+                                <i data-feather="send" class="icon-xs mr-1"></i>发送
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-5">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mt-0 mb-3">说明</h5>
+                <ul class="mb-0 pl-3 text-muted">
+                    <li>邮件下发后由游戏侧投递，本页不做「发送成功」的最终确认，请以游戏内为准。</li>
+                    <li>全服邮件请谨慎：一旦发出无法撤回。</li>
+                    <li>每次发送都会记录到「系统设置 - 操作日志」，含操作人、IP 与标题。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        gmt.mail.boot();
+    });
+</script>
+
+{{template "foot" .}}

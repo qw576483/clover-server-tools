@@ -1,0 +1,18 @@
+# 编译产物（各工具用 go build 自行生成）
+*.exe
+*.test
+*.out
+/bin/
+/dist/
+
+# 运行期日志与临时数据
+*.log
+/logs/
+
+# 本地 TLS 证书（本机用 mkcert 生成，不入库）
+mkcert/certs/
+msg-web/certs/*.pem
+
+# 系统文件
+.DS_Store
+Thumbs.db

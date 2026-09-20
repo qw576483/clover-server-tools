@@ -1,0 +1,12 @@
+# msg-client 配置
+# 默认网关地址（QUIC 端口）
+addr: 127.0.0.1:8003
+# TCP 回退端口（当 QUIC 连接失败时使用）
+tcp_addr: 127.0.0.1:8002
+# 账号服 HTTP 地址（必填）：登录 / 注册都经它走 HTTP——游戏服已不再接收账号密码。
+# 流程：先 HTTP 换 token，再 EMsgLogin{token}；游戏服随后调服务端 auth.verify_addr 换 owner。
+auth_addr: "http://127.0.0.1:8051"
+# 引擎消息已内置（C2S/回包/推送），无需配置引擎源码路径。
+# business 填业务侧自定义消息的 def 目录（相对本文件解析），可多个，按需添加。
+proto:
+    business: []

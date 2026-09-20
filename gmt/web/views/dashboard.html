@@ -1,0 +1,68 @@
+{{template "head" .}}
+
+<div class="row page-title align-items-center">
+    <div class="col-sm-6 col-xl-6">
+        <h4 class="mb-1 mt-0">概览</h4>
+    </div>
+    <div class="col-sm-6 col-xl-6 text-sm-right">
+        <button type="button" class="btn btn-light" id="gmt-reload">
+            <i data-feather="refresh-cw" class="icon-xs mr-1"></i>刷新
+        </button>
+    </div>
+</div>
+
+<div class="row" id="gmt-stats"></div>
+
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mt-0 mb-3">游戏侧节点</h5>
+                <div class="table-responsive">
+                    <table class="table table-sm table-centered mb-0">
+                        <thead>
+                            <tr>
+                                <th>节点</th>
+                                <th>地址</th>
+                                <th>延迟</th>
+                                <th>状态</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gmt-nodes"></tbody>
+                    </table>
+                </div>
+                <p class="text-muted font-13 mt-2 mb-0">
+                    当前驱动 <code>{{.Driver}}</code>{{if eq .Driver "mock"}}：数据为示例，未真实连接游戏服{{end}}
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mt-0 mb-3">最近操作</h5>
+                <div class="table-responsive">
+                    <table class="table table-sm table-centered mb-0">
+                        <thead>
+                            <tr>
+                                <th style="width:130px">时间</th>
+                                <th style="width:110px">操作人</th>
+                                <th style="width:110px">模块</th>
+                                <th>详情</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gmt-recent"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        gmt.dashboard.boot();
+    });
+</script>
+
+{{template "foot" .}}
