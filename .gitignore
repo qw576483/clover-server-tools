@@ -11,6 +11,11 @@
 # `git status` 里，成品会在无人察觉的情况下静默过期。
 !windows-env/core/env.exe
 
+# 例外：mkcert 是**第三方成品工具**，随仓库分发 ⇒ clone 后无需翻墙下载即可签发本地证书。
+# 通配到 `mkcert-*.exe`：官方 release 资产名就是 `mkcert-vX.X.X-windows-amd64.exe`，
+# 换版本直接放进来即可（同样必须写成例外，理由见上）。
+!mkcert/mkcert-*.exe
+
 # 运行期日志与临时数据
 *.log
 /logs/

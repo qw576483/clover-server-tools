@@ -37,11 +37,19 @@ cd ../../msg-client
 go run ./cmd/client
 ```
 
-## 二进制与证书不入库
+## 二进制与证书入库规则
 
-- 各工具的 `*.exe` 由源码 `go build` 生成，**仓库不提交二进制**，请按上表自行编译。
-- `mkcert/mkcert-v*.exe` 是第三方工具，需从 [mkcert releases](https://github.com/FiloSottile/mkcert/releases) 下载后放入 `mkcert/`。
-- 本地 TLS 证书（`server.pem` / `wt.pem`）由 mkcert 在**本机生成**，同样不入库；生成方式见 `mkcert/README.md`。WebTransport 专用证书由网关自动签发与轮换，日常开发无需手动处理。
+**只有两个 exe 随仓库走**，为的是"clone 后不用装 Go、不用翻墙下载即可开箱"。两者都走普通 Git 存储，**不使用 Git LFS**：
+
+| 入库的 exe | 体积 | 为什么入库 |
+|---|---|---|
+| `windows-env/core/env.exe` | ≈ 3.7 MB | windows-env 的启动器，起 etcd / nats / redis / mysql 全靠它 |
+| `mkcert/mkcert-*.exe` | ≈ 4.7 MB | 第三方 mkcert，本机签发 TLS 证书用（未入库时须手动下载） |
+
+**其余一概不入库**：
+
+- 其它各工具的 `*.exe` 由源码 `go build` 生成，**不提交二进制**，请按上表自行编译。
+- 本地 TLS 证书（`server.pem` / `wt.pem`）由 mkcert 在**本机生成**，**绝不能跨机器拷贝**；生成方式见 `mkcert/README.md`。WebTransport 专用证书由网关自动签发与轮换，日常开发无需手动处理。
 
 ## 相关仓库
 
