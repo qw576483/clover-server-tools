@@ -12,7 +12,7 @@ Clover 服务端的**开发与运维工具集**：本地依赖环境、网关调
 
 | 目录 | 是什么 | 启动方式 |
 |---|---|---|
-| `windows-env/` | Windows 本地一键依赖环境：`etcd` / `nats` / `redis` / `mysql` 四件套，由 `core/env.exe` 统一启停（MySQL 以隐藏窗口后台启动，关闭终端后服务仍在跑） | `cd windows-env/core && go build -o env.exe . && ./env.exe start` |
+| `windows-env/` | Windows 本地一键依赖环境：`etcd` / `nats` / `redis` / `mysql` 四件套，由 `core/env.exe` 统一启停（MySQL 以隐藏窗口后台启动，关闭终端后服务仍在跑） | `cd windows-env/core && ./env.exe start`（`env.exe` 已随仓库提供；只有改了它的源码才需要 `go build -o env.exe .`） |
 | `msg-client/` | 网关**命令行调试客户端**：连网关收发消息，联调登录与业务消息；另含 `viewprobe` 视图探针 | `cd msg-client && go run ./cmd/client` |
 | `msg-web/` | 网关 **Web 可视化**测试工具：浏览器 WebSocket / WebTransport 直连网关（0ms 代理开销），页面上查看消息、组包收发 | `cd msg-web && go run .`（默认 https://127.0.0.1:3020；**无证书时自动降级明文 http**，也可用 `-http` 强制明文） |
 | `robot/` | **机器人 / 自动化压测**客户端：批量登录 + 并发压测（可 ramp），输出可判定的聚合报告（成功数 / 分位延迟 / 吞吐 / 失败归类），支持 `--json` 给脚本用 | `cd robot && go run ./cmd/robot` |
@@ -32,8 +32,8 @@ git clone https://github.com/qw576483/clover-server-tools.git
 cd clover-server-tools
 
 # 1. 起本地依赖（Windows）：MySQL / Redis / NATS / etcd
+#    env.exe 已随仓库提供，直接跑即可（只有改了它的源码才需要 go build -o env.exe .）
 cd windows-env/core
-go build -o env.exe .
 ./env.exe start
 
 # 2. 起一个调试客户端，连网关联调
