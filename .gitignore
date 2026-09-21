@@ -5,6 +5,12 @@
 /bin/
 /dist/
 
+# 例外：windows-env 的 env.exe 是**要分发的启动器成品**
+# （clone 后免装 Go 工具链即可一键起 etcd / nats / redis / mysql），随仓库走。
+# 必须写成例外而不是每次 `git add -f`：被忽略的文件重新编译后**不会**出现在
+# `git status` 里，成品会在无人察觉的情况下静默过期。
+!windows-env/core/env.exe
+
 # 运行期日志与临时数据
 *.log
 /logs/
