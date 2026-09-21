@@ -57,7 +57,8 @@ go run ./cmd/client
 |---|---|
 | [clover-server-engine](https://github.com/qw576483/clover-server-engine) | Go 服务端引擎（本仓库各工具的服务对象） |
 | [clover-doc](https://github.com/qw576483/clover-doc) | 框架文档，`server/tools/` 下有各工具的说明页 |
-| [clover-tools](https://github.com/qw576483/clover-tools) | 打表工具 / AI skill 等**开发期**工具 |
+| [clover-tools](https://github.com/qw576483/clover-tools) | 打表工具等**开发期**工具 |
+| [clover-ai-skill](https://github.com/qw576483/clover-ai-skill) | AI 交付 skill（规则 / 范式 / 脚手架） |
 
 ## 许可证
 
