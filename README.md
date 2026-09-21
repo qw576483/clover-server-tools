@@ -4,6 +4,10 @@ Clover 服务端的**开发与运维工具集**：本地依赖环境、网关调
 
 每个工具都是**独立可编译的 Go 程序**（各自带 `go.mod`），互不依赖，按需单独构建使用。
 
+## 从没用过 Clover？
+
+照着 **[新手指南：用 AI 从零做一个 Clover 游戏](https://github.com/qw576483/clover-doc/blob/main/ai/ai-quick-start.md)** 走一遍即可 —— 从装 Unity 6 到让 AI 开出第一个工程，全程不用自己写代码。
+
 ## 工具一览
 
 | 目录 | 是什么 | 启动方式 |
