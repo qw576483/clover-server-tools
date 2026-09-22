@@ -8,6 +8,12 @@ Clover 服务端的**开发与运维工具集**：本地依赖环境、网关调
 
 照着 **[新手指南：用 AI 从零做一个 Clover 游戏](https://github.com/qw576483/clover-doc/blob/main/ai/ai-quick-start.md)** 走一遍即可 —— 从装 Unity 6 到让 AI 开出第一个工程，全程不用自己写代码。
 
+用这套流程做出来的成品见 **[游戏 Demo 清单](https://github.com/qw576483/clover-doc/blob/main/ai/game-demo.md)**。
+
+## 交流群
+
+QQ 群：**clover-engine交流1群** `1101150552`
+
 ## 工具一览
 
 | 目录 | 是什么 | 启动方式 |
